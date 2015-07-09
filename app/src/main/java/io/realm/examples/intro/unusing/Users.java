@@ -1,17 +1,16 @@
-package io.realm.examples.intro;
+package io.realm.examples.intro.unusing;
 
 import com.bluelinelabs.logansquare.annotation.JsonField;
 import com.bluelinelabs.logansquare.annotation.JsonObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TheFinestArtist on 7/7/15.
  */
 @JsonObject
-public class User {
+public class Users {
     @JsonField
-    public String address;
-    @JsonField
-    public String number;
-    @JsonField
-    public boolean active;
+    List<User> users = new ArrayList<>();
 }

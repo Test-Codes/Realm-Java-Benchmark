@@ -1,12 +1,14 @@
-package io.realm.examples.intro;
+package io.realm.examples.intro.model.realm;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by TheFinestArtist on 6/24/15.
  */
-public class Email extends RealmObject {
+public class RealmPrimaryContact extends RealmObject {
 
+    @PrimaryKey
     private String address;
     private String number;
     private boolean active;

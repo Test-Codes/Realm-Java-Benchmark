@@ -21,15 +21,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import com.bluelinelabs.logansquare.LoganSquare;
-import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.examples.intro.model.realm.RealmPrimaryContact;
 
 
 public class IntroExampleActivity extends Activity {
@@ -49,126 +43,80 @@ public class IntroExampleActivity extends Activity {
         Realm.deleteRealm(new RealmConfiguration.Builder(this).build());
         realm = Realm.getInstance(this);
 
-        {
-            long timeMillis = System.currentTimeMillis();
-            realm.beginTransaction();
-            for (int i = 0; i < 30000; i++) {
-                Email email = realm.createObject(Email.class);
-                email.setAddress("john" + i + "@example.com");
-                email.setNumber("#" + i);
-                email.setActive(true);
-            }
-            realm.commitTransaction();
-            Log.e("IntroExampleActivity", "Time#1: " + (System.currentTimeMillis() - timeMillis));
-        }
+//        {
+//            long timeMillis = System.currentTimeMillis();
+//            for (int i = 0; i < 10000; i++) {
+//                BasicContact contact = new BasicContact();
+//                contact.address = "john" + i + "@example.com";
+//                contact.number = "#" + i;
+//                contact.active = true;
+//            }
+//            Log.e("IntroExampleActivity", "Create Object Time#: " + (System.currentTimeMillis() - timeMillis));
+//        }
+
+//        {
+//            long timeMillis = System.currentTimeMillis();
+//            Gson gson = new Gson();
+//            for (int i = 0; i < 10000; i++) {
+//                BasicContact contact = new BasicContact();
+//                contact.address = "john" + i + "@example.com";
+//                contact.number = "#" + i;
+//                contact.active = true;
+//                gson.toJson(contact);
+//            }
+//            Log.e("IntroExampleActivity", "toJson Time#: " + (System.currentTimeMillis() - timeMillis));
+//        }
+
+//        {
+//            long timeMillis = System.currentTimeMillis();
+//            Gson gson = new Gson();
+//            for (int i = 0; i < 10000; i++) {
+//                gson.fromJson("{\"address\":\"john" + i + "@example.com\",\"number\":\"#" + i + "\",\"active\":true}", BasicContact.class);
+//            }
+//            Log.e("IntroExampleActivity", "fromJson Time#: " + (System.currentTimeMillis() - timeMillis));
+//        }
+
+//        {
+//            long timeMillis = System.currentTimeMillis();
+//            realm.beginTransaction();
+//            for (int i = 0; i < 10000; i++) {
+//                RealmContact contact = realm.createObject(RealmContact.class);
+//                contact.setAddress("john" + i + "@example.com");
+//                contact.setNumber("#" + i);
+//                contact.setActive(true);
+//            }
+//            realm.commitTransaction();
+//            Log.e("IntroExampleActivity", "Realm createObject Time#: " + (System.currentTimeMillis() - timeMillis));
+//        }
+
+//        {
+//            long timeMillis = System.currentTimeMillis();
+//            realm.beginTransaction();
+//            for (int i = 0; i < 10000; i++) {
+//                RealmContact contact = new RealmContact();
+//                contact.setAddress("john" + i + "@example.com");
+//                contact.setNumber("#" + i);
+//                contact.setActive(true);
+//                realm.copyToRealm(contact);
+//            }
+//            realm.commitTransaction();
+//            Log.e("IntroExampleActivity", "Realm copyToRealm Time#: " + (System.currentTimeMillis() - timeMillis));
+//        }
 
         {
             long timeMillis = System.currentTimeMillis();
             realm.beginTransaction();
-            for (int i = 0; i < 30000; i++) {
-                Email email = new Email();
-                email.setAddress("john" + i + "@example.com");
-                email.setNumber("#" + i);
-                email.setActive(true);
-                realm.copyToRealm(email);
+            for (int i = 0; i < 10000; i++) {
+                RealmPrimaryContact contact = new RealmPrimaryContact();
+                contact.setAddress("john" + i + "@example.com");
+                contact.setNumber("#" + i);
+                contact.setActive(true);
+                realm.copyToRealmOrUpdate(contact);
             }
             realm.commitTransaction();
-            Log.e("IntroExampleActivity", "Time#2: " + (System.currentTimeMillis() - timeMillis));
-        }
-
-        {
-            long timeMillis = System.currentTimeMillis();
-            realm.beginTransaction();
-            List<Email> emails = new ArrayList<>();
-            for (int i = 0; i < 30000; i++) {
-                Email email = new Email();
-                email.setAddress("john" + i + "@example.com");
-                email.setNumber("#" + i);
-                email.setActive(true);
-                emails.add(email);
-            }
-            realm.copyToRealm(emails);
-            realm.commitTransaction();
-            Log.e("IntroExampleActivity", "Time#3: " + (System.currentTimeMillis() - timeMillis));
-        }
-
-        {
-            long timeMillis = System.currentTimeMillis();
-            Gson gson = new Gson();
-            for (int i = 0; i < 30000; i++) {
-                Contact contact = new Contact();
-                contact.address = "john" + i + "@example.com";
-                contact.number = "#" + i;
-                contact.active = true;
-                String jsonString = gson.toJson(contact);
-            }
-            Log.e("IntroExampleActivity", "Time#4: " + (System.currentTimeMillis() - timeMillis));
-        }
-
-        {
-            try {
-                long timeMillis = System.currentTimeMillis();
-                Gson gson = new Gson();
-                for (int i = 0; i < 30000; i++) {
-                    User user = new User();
-                    user.address = "john" + i + "@example.com";
-                    user.number = "#" + i;
-                    user.active = true;
-                    String jsonString = LoganSquare.serialize(user);
-                }
-                Log.e("IntroExampleActivity", "Time#5: " + (System.currentTimeMillis() - timeMillis));
-            } catch (IOException e) {
-                Log.e("IntroExampleActivity", "IOException: " + e.getMessage());
-            }
-        }
-
-        {
-            try {
-                long timeMillis = System.currentTimeMillis();
-                Users users = new Users();
-                for (int i = 0; i < 30000; i++) {
-                    User user = new User();
-                    user.address = "john" + i + "@example.com";
-                    user.number = "#" + i;
-                    user.active = true;
-                    users.users.add(user);
-                }
-                String jsonString = LoganSquare.serialize(users);
-                Preferences.setData(this, jsonString);
-                Log.e("IntroExampleActivity", "Time#6: " + (System.currentTimeMillis() - timeMillis));
-            } catch (IOException e) {
-                Log.e("IntroExampleActivity", "IOException: " + e.getMessage());
-            }
+            Log.e("IntroExampleActivity", "Realm copyToRealmOrUpdate Time#: " + (System.currentTimeMillis() - timeMillis));
         }
     }
-
-//            07-07 14:33:25.140  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#1: 2664
-//            07-07 14:33:28.900  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#2: 3758
-//            07-07 14:33:32.165  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#3: 3265
-//            07-07 14:33:35.800  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#4: 3639
-//            07-07 14:33:37.630  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#5: 1826
-//            07-07 14:33:39.440  23219-23219/io.realm.examples.intro E/IntroExampleActivity﹕ Time#6: 1813
-
-//            07-07 14:34:21.070  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#1: 3666
-//            07-07 14:34:23.630  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#2: 2558
-//            07-07 14:34:26.850  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#3: 3221
-//            07-07 14:34:30.525  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#4: 3678
-//            07-07 14:34:32.345  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#5: 1817
-//            07-07 14:34:38.190  24513-24513/io.realm.examples.intro E/IntroExampleActivity﹕ Time#6: 5844
-
-//            07-07 14:34:55.050  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#1: 2427
-//            07-07 14:34:58.125  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#2: 3075
-//            07-07 14:35:01.390  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#3: 3264
-//            07-07 14:35:04.985  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#4: 3596
-//            07-07 14:35:06.745  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#5: 1756
-//            07-07 14:35:12.520  25584-25584/io.realm.examples.intro E/IntroExampleActivity﹕ Time#6: 5779
-
-//            07-07 14:36:31.545  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#1: 3306
-//            07-07 14:36:34.335  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#2: 2792
-//            07-07 14:36:36.815  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#3: 2478
-//            07-07 14:36:39.525  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#4: 2711
-//            07-07 14:36:40.885  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#5: 1362
-//            07-07 14:36:45.355  26561-26561/io.realm.examples.intro E/IntroExampleActivity﹕ Time#6: 4467
 
     @Override
     protected void onDestroy() {
@@ -176,3 +124,45 @@ public class IntroExampleActivity extends Activity {
         realm.close();
     }
 }
+
+//07-10 00:34:33.765  12003-12003/io.realm.examples.intro E/IntroExampleActivity﹕ Create Object Time#: 149
+//07-10 00:34:46.955  12877-12877/io.realm.examples.intro E/IntroExampleActivity﹕ Create Object Time#: 159
+//07-10 00:34:08.420  10927-10927/io.realm.examples.intro E/IntroExampleActivity﹕ Create Object Time#: 138
+//07-10 00:35:37.695  13733-13733/io.realm.examples.intro E/IntroExampleActivity﹕ Create Object Time#: 142
+//07-10 00:36:04.925  14806-14806/io.realm.examples.intro E/IntroExampleActivity﹕ Create Object Time#: 144
+//146.4
+
+//07-10 00:36:59.855  15863-15863/io.realm.examples.intro E/IntroExampleActivity﹕ toJson Time#: 1199
+//07-10 00:37:12.510  16579-16579/io.realm.examples.intro E/IntroExampleActivity﹕ toJson Time#: 1068
+//07-10 00:37:30.110  16915-16915/io.realm.examples.intro E/IntroExampleActivity﹕ toJson Time#: 1050
+//07-10 00:37:55.095  17464-17464/io.realm.examples.intro E/IntroExampleActivity﹕ toJson Time#: 1167
+//07-10 00:38:06.710  18130-18130/io.realm.examples.intro E/IntroExampleActivity﹕ toJson Time#: 1125
+//1121.8
+
+//07-10 00:38:53.750  19777-19777/io.realm.examples.intro E/IntroExampleActivity﹕ fromJson Time#: 1046
+//07-10 00:39:07.370  20110-20110/io.realm.examples.intro E/IntroExampleActivity﹕ fromJson Time#: 1029
+//07-10 00:39:21.470  20360-20360/io.realm.examples.intro E/IntroExampleActivity﹕ fromJson Time#: 1038
+//07-10 00:54:12.075  23711-23711/io.realm.examples.intro E/IntroExampleActivity﹕ fromJson Time#: 1011
+//07-10 00:54:23.575  23942-23942/io.realm.examples.intro E/IntroExampleActivity﹕ fromJson Time#: 1036
+//1032
+
+//07-10 00:55:33.525  25067-25067/io.realm.examples.intro E/IntroExampleActivity﹕ Realm createObject Time#: 889
+//07-10 00:56:07.210  26388-26388/io.realm.examples.intro E/IntroExampleActivity﹕ Realm createObject Time#: 901
+//07-10 00:55:45.850  25891-25891/io.realm.examples.intro E/IntroExampleActivity﹕ Realm createObject Time#: 791
+//07-10 00:56:23.405  27269-27269/io.realm.examples.intro E/IntroExampleActivity﹕ Realm createObject Time#: 837
+//07-10 00:57:07.905  29349-29349/io.realm.examples.intro E/IntroExampleActivity﹕ Realm createObject Time#: 806
+//844.8
+
+//07-10 00:58:28.715  30890-30890/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealm Time#: 893
+//07-10 00:58:44.540  31200-31200/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealm Time#: 971
+//07-10 00:58:56.555  31488-31488/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealm Time#: 958
+//07-10 00:59:11.005  31644-31644/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealm Time#: 941
+//07-10 00:59:36.065  32059-32059/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealm Time#: 963
+//945.2
+
+//07-10 01:01:45.060    2337-2337/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealmOrUpdate Time#: 1751
+//07-10 01:02:10.475    3007-3007/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealmOrUpdate Time#: 1700
+//07-10 01:02:26.405    3447-3447/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealmOrUpdate Time#: 1680
+//07-10 01:02:36.085    3615-3615/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealmOrUpdate Time#: 1650
+//07-10 01:02:58.365    4069-4069/io.realm.examples.intro E/IntroExampleActivity﹕ Realm copyToRealmOrUpdate Time#: 1754
+//1707

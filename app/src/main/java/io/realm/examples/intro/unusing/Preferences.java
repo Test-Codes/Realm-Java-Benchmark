@@ -1,4 +1,4 @@
-package io.realm.examples.intro;
+package io.realm.examples.intro.unusing;
 
 import android.content.Context;
 import android.content.SharedPreferences;
